@@ -130,6 +130,18 @@ const getAllInquiries = async (req, res) => {
   }
 };
 
+// @desc Reset all demo data (users, properties, inquiries) - admin only
+// @route POST /api/admin/reset-demo-data
+const resetDemoData = async (req, res) => {
+  try {
+    const { seedData } = require("../seed/seed");
+    await seedData();
+    res.json({ message: "Demo data reset successfully" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 module.exports = {
   getStats,
   getAllPropertiesAdmin,
@@ -138,4 +150,6 @@ module.exports = {
   getAllUsers,
   toggleBlockUser,
   getAllInquiries,
+  resetDemoData,
 };
+

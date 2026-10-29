@@ -5,9 +5,29 @@ import api from "../../api/axios";
 export default function AdminDashboard() {
   const [stats, setStats] = useState(null);
 
-  useEffect(() => {
+  const [resetting, setResetting] = useState(false);
+
+  const fetchStats = () => {
     api.get("/admin/stats").then((res) => setStats(res.data)).catch(() => {});
+  };
+
+  useEffect(() => {
+    fetchStats();
   }, []);
+
+  const handleResetData = async () => {
+    if (!confirm("Are you sure you want to reset all demo properties, accounts, and inquiries back to original state?")) return;
+    setResetting(true);
+    try {
+      await api.post("/admin/reset-demo-data");
+      fetchStats();
+      alert("All demo listings and accounts have been reset to their original state!");
+    } catch (err) {
+      alert("Failed to reset: " + (err.response?.data?.message || err.message));
+    } finally {
+      setResetting(false);
+    }
+  };
 
   if (!stats) return <div className="text-center py-20 text-gray-400">Loading stats...</div>;
 
@@ -24,6 +44,23 @@ export default function AdminDashboard() {
 
   return (
     <div>
+      <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
+        <div>
+          <h2 className="text-xl font-extrabold text-gray-900">Platform Analytics</h2>
+          <p className="text-xs text-gray-500">Live operational overview across all users and listings.</p>
+        </div>
+        <button
+          onClick={handleResetData}
+          disabled={resetting}
+          className="btn-outline text-xs px-3 py-1.5 border-dashed border-gray-300 text-gray-600 hover:text-brand-700 hover:border-brand-600 flex items-center gap-1.5"
+          title="Restore all sample properties and users back to original demo state"
+        >
+          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+          {resetting ? "Resetting..." : "Reset Demo Data"}
+        </button>
+      </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
         {cards.map((c) => (
           <Link key={c.label} to={c.link || "/admin/properties"} className={`card p-5 ${c.color} hover:shadow-md transition`}>

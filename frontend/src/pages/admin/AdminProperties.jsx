@@ -87,11 +87,13 @@ export default function AdminProperties() {
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex flex-wrap justify-end gap-1.5">
-                      {p.status === "pending" && (
+                      {p.status === "pending" ? (
                         <>
                           <button onClick={() => updateStatus(p._id, "active")} className="btn-primary btn-sm">Approve</button>
-                          <button onClick={() => updateStatus(p._id, "rejected")} className="btn-outline btn-sm">Reject</button>
+                          <button onClick={() => updateStatus(p._id, "rejected")} className="btn-outline btn-sm text-red-600">Reject</button>
                         </>
+                      ) : (
+                        <button onClick={() => updateStatus(p._id, "pending")} className="btn-outline btn-sm text-amber-700 hover:bg-amber-50" title="Restore to pending for demo">Reset to Pending</button>
                       )}
                       <Link to={`/admin/properties/${p._id}/edit`} className="btn-outline btn-sm">Edit Rent/Details</Link>
                       <button onClick={() => handleDelete(p._id)} className="btn-danger btn-sm">Delete</button>
