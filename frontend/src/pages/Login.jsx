@@ -24,15 +24,6 @@ export default function Login() {
     }
   };
 
-  const fillDemo = (role) => {
-    const creds = {
-      admin: { email: "admin@realestate.com", password: "admin123" },
-      owner: { email: "owner@realestate.com", password: "owner123" },
-      user: { email: "user@realestate.com", password: "user123" },
-    };
-    setForm(creds[role]);
-  };
-
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
       <div className="card w-full max-w-md p-8">
@@ -52,15 +43,6 @@ export default function Login() {
           </div>
           <button type="submit" disabled={loading} className="btn-primary w-full">{loading ? "Logging in..." : "Log In"}</button>
         </form>
-
-        <div className="mt-6 pt-4 border-t border-gray-100">
-          <p className="text-xs text-gray-400 mb-2">Try a demo account (after seeding the database):</p>
-          <div className="flex gap-2">
-            <button onClick={() => fillDemo("admin")} className="btn-outline btn-sm flex-1">Admin</button>
-            <button onClick={() => fillDemo("owner")} className="btn-outline btn-sm flex-1">Owner</button>
-            <button onClick={() => fillDemo("user")} className="btn-outline btn-sm flex-1">User</button>
-          </div>
-        </div>
 
         <p className="text-sm text-gray-500 mt-6 text-center">
           Don't have an account? <Link to="/register" className="text-brand-600 font-semibold">Sign up</Link>
