@@ -1,0 +1,33 @@
+# Render.com deployment blueprint for the backend API.
+# Usage: In Render, choose "New +" -> "Blueprint" and point it at this repo,
+# or manually create a Web Service with the settings below.
+#
+# You will still need to set these as SECRET env vars in the Render dashboard
+# (do not commit real values): MONGO_URI, JWT_SECRET, CLOUDINARY_CLOUD_NAME,
+# CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, CLIENT_URL
+
+services:
+  - type: web
+    name: nestfind-backend
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: PORT
+        value: 5000
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: CLIENT_URL
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
